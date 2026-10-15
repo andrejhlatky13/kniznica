@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moja knižnica</title>
+<meta name="theme-color" content="#1b3a5c">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>📚 Moja knižnica</h1>
+  <div class="top-actions">
+    <button id="btnTheme" class="btn small" aria-label="Prepnúť tmavý / svetlý režim">🌓 Režim</button>
+    <button id="btnMenu" class="btn small">⚙️ Viac</button>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button id="tabNeprecitane" class="tab active">📖 Neprečítané <span id="cntN"></span></button>
+  <button id="tabPrecitane" class="tab">✅ Prečítané <span id="cntP"></span></button>
+</nav>
+
+<main>
+  <button id="btnAdd" class="btn primary huge">➕ Pridať knihu</button>
+  <div class="searchrow">
+    <input id="search" type="search" placeholder="🔍 Hľadať názov, autora…" aria-label="Hľadať">
+    <select id="filterDruh" aria-label="Filtrovať podľa druhu"><option value="">Všetky druhy</option></select>
+  </div>
+  <div id="list"></div>
+</main>
+
+<!-- Formulár -->
+<dialog id="dlgForm">
+  <form id="bookForm" method="dialog">
+    <h2 id="formTitle">Nová kniha</h2>
+    <button type="button" id="btnMic" class="btn mic huge">🎤 Nadiktovať</button>
+    <p id="micHint" class="hint">Povedzte napr.: „Hobit, autor Tolkien, fantasy“</p>
+    <label>Názov
+      <input id="fNazov" required autocomplete="off">
+    </label>
+    <button type="button" id="btnLookup" class="btn">🌐 Dohľadať autora a obálku podľa názvu</button>
+    <div id="lookupResults"></div>
+    <label>Autor <input id="fAutor" autocomplete="off"></label>
+    <label>Druh
+      <select id="fDruh"></select>
+    </label>
+    <label id="wrapVlastny" hidden>Vlastný druh <input id="fDruhVlastny"></label>
+    <label>Stav
+      <select id="fStav">
+        <option value="neprecitane">📖 Neprečítané</option>
+        <option value="citam">📖 Práve čítam (neprečítané)</option>
+        <option value="precitane">✅ Prečítané</option>
+      </select>
+    </label>
+    <label>Strana (kde som skončil) <input id="fStrana" type="number" inputmode="numeric" min="0"></label>
+    <label>Poznámka <textarea id="fPoznamka" rows="3"></textarea></label>
+    <label>Dátum pridania <input id="fDatumPridania" type="date"></label>
+    <label>Dátum prečítania <input id="fDatumPrecitania" type="date"></label>
+    <div class="photo">
+      <img id="fFotoPrev" alt="" hidden>
+      <label class="btn">📷 Odfotiť obálku
+        <input id="fFoto" type="file" accept="image/*" capture="environment" hidden>
+      </label>
+      <button type="button" id="btnFotoDel" class="btn" hidden>🗑️ Zmazať fotku</button>
+    </div>
+    <div class="formbtns">
+      <button type="submit" id="btnSave" class="btn primary huge">💾 Uložiť</button>
+      <button type="button" id="btnCancel" class="btn huge">✖ Zrušiť</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Menu -->
+<dialog id="dlgMenu">
+  <h2>Viac možností</h2>
+  <button id="btnExport" class="btn huge">📊 Uložiť do Excelu (.xlsx)</button>
+  <label class="btn huge">📥 Načítať z Excelu (.xlsx)
+    <input id="impXlsx" type="file" accept=".xlsx,.xls" hidden></label>
+  <button id="btnBackup" class="btn huge">💾 Záloha (JSON)</button>
+  <label class="btn huge">♻️ Obnoviť zo zálohy (JSON)
+    <input id="impJson" type="file" accept=".json,application/json" hidden></label>
+  <div class="sizerow">Veľkosť písma:
+    <button id="fontMinus" class="btn">A−</button>
+    <button id="fontPlus" class="btn">A+</button>
+  </div>
+  <button id="btnInstall" class="btn huge" hidden>📲 Nainštalovať aplikáciu</button>
+  <button id="btnMenuClose" class="btn primary huge">✖ Zavrieť</button>
+</dialog>
+
+<!-- Potvrdenie -->
+<dialog id="dlgConfirm">
+  <p id="confirmText" class="big"></p>
+  <div class="formbtns">
+    <button id="confirmYes" class="btn danger huge">Áno</button>
+    <button id="confirmNo" class="btn huge">Nie</button>
+  </div>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="xlsx.full.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
